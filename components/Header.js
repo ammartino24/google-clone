@@ -1,0 +1,52 @@
+import { MicrophoneIcon, SearchIcon } from "@heroicons/react/outline";
+import { XIcon } from "@heroicons/react/solid";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useRef } from "react";
+import Avatar from "./Avatar";
+import HeaderOptions from "./HeaderOptions";
+function Header() {
+    const router =useRouter();
+    const searchInputref= useRef(null);
+
+    const search = e => {
+        e.preventDefault();
+
+        const term=searchInputref.current.value;
+
+        if (!term) return;
+        router.push(`search?term=${term}`)
+    }
+    return (
+        <header className="sticky top-0 bg-white">
+        <div className="flex w-full p-6 items-center">
+        <Image
+          src="https://www.google.co.uk/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+          height={40}
+          width={120}
+          onClick={ () => router.push ("/")}
+          className="cursor-pointer"
+        />
+
+        <form className="flex flex-grow px-6 py-3 ml-10 mr-5 border border-gray-200 rounded-full
+        shadow-lg max-w-3xl items-center">
+            <input ref={searchInputref} className="flex-grow w-full focus:outline-none" 
+            type="text" />
+            <XIcon className="h-7 sm:mr-3text-gray-500 cursor-pointer transition 
+            duration 100 transform hover:scale-125"
+            onClick={() => (searchInputref.current.value="")}
+            />
+            <MicrophoneIcon className=" mr-3 h-6 hidden sm:inline-flex
+            text-blue-500 border-l-2 pl-4 border-gray-300"/>
+            <SearchIcon className="h-6 text-blue-500 sm:inline-flex" />
+            <button hidden type='submit' onClick={search}
+            >Search</button>
+        </form>
+        <Avatar className="ml-auto" jpgUrl={"https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.thornlighting.com%2Fen%2Fimage-folder%2Foresund-176x176.jpg%2F%40%40images%2F07d04af4-76da-4f24-a563-ae47d8999bd5.jpeg&f=1&nofb=1"}/>
+        </div>
+          <HeaderOptions />
+        </header>
+    );
+}
+
+export default Header;
